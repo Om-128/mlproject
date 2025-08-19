@@ -51,11 +51,52 @@ class ModelTrainer:
                 "AdaBoost": AdaBoostRegressor()
             }
 
+            '''     Hyperparameter tuning for the models    '''
+            params = {
+                    "Decision Tree": {
+                        "criterion": ["squared_error", "friedman_mse", "absolute_error", "poisson"],
+                        "splitter": ["best", "random"],
+                        },
+                    "Random Forest": {
+                        "n_estimators": [10, 50, 100],
+                        "criterion": ["squared_error", "absolute_error"],
+                    },
+                    "Gradient Boosting": {
+                        "learning_rate": [0.1, 0.01, 0.05, 0.001],
+                        "subsample": [0.6, 0.7, 0.75, 0.8, 0.85, 0.9],
+                        "n_estimators": [8, 16, 32, 64, 128, 256],
+                    },
+                    "Linear Regression": {
+                        "fit_intercept": [True, False],
+                        "positive": [True, False]
+                    },
+                    "XGBoost": {
+                        "learning_rate": [0.1, 0.01, 0.05, 0.001],
+                        "n_estimators": [8, 16, 32, 64, 128, 256],
+                    },
+                    "CatBoost": {
+                        "depth": [6, 8, 10],
+                        "learning_rate": [0.01, 0.05, 0.1],
+                        "iterations": [30, 50, 100]
+                    },
+                    "K-Neighbors": {
+                        "n_neighbors": [3, 5, 7, 9],
+                        "weights": ["uniform", "distance"],
+                        "p": [1, 2]
+                    },
+                    "AdaBoost": {
+                        "n_estimators": [50, 100, 200],
+                        "learning_rate": [0.01, 0.1, 1.0]
+                    }
+                }
+
+
             model_report: dict = evalute_model(x_train=x_train, 
             y_train=y_train,
             x_test=x_test,
             y_test=y_test,
-            models=models
+            models=models,
+            param=params
             )
 
             ''' Get the best model based on R2 score '''
